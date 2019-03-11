@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'karmillaregular';
+    src: url('karmilla-regular-webfont.woff2') format('woff2'),
+         url('karmilla-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
