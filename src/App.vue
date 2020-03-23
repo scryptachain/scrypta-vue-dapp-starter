@@ -1,7 +1,30 @@
 <template>
   <div id="app">
-    <router-view v-if="!isLogging && !needsRSA && wallet" />
-    <div v-if="needsRSA && wallet">Need to create RSA keys!</div>
+    <div v-if="!isLogging && wallet">
+      <b-navbar>
+          <template slot="brand">
+              <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                  <img src="/logo.png" >
+              </b-navbar-item>
+          </template>
+          <template slot="start">
+              <b-navbar-item href="/#/">
+                  Home
+              </b-navbar-item>
+          </template>
+
+          <template slot="end">
+              <b-navbar-item tag="div">
+                  <div class="buttons">
+                      <a v-on:click="logoutUser" class="button is-primary">
+                          <strong>Logout</strong>
+                      </a>
+                  </div>
+              </b-navbar-item>
+          </template>
+      </b-navbar>
+      <router-view/>
+    </div>
     <div v-if="!wallet">
       <section class="hero">
         <div class="hero-body">
@@ -72,7 +95,6 @@
         address: '',
         wallet: '',
         isLogging: true,
-        needsRSA: false,
         isCreating: false,
         showCreateModal: false,
         password: '',
@@ -86,9 +108,6 @@
         let SIDS = app.wallet.split(':')
         app.address = SIDS[0]
         let identity = await app.scrypta.returnIdentity(app.address)
-        if(identity.rsa === undefined){
-          app.needsRSA = true
-        }
         app.wallet = identity
         app.isLogging = false
       }else{
@@ -100,6 +119,10 @@
         const app = this
         app.showCreateModal = true
       },
+      logoutUser(){
+        localStorage.setItem('SID','')
+        location.reload()
+      },
       async createUser(){
         const app = this
         if(app.password !== ''){
@@ -109,7 +132,6 @@
               let id = await app.scrypta.createAddress(app.password, true)
               await app.scrypta.createRSAKeys(id.pub, app.password)
               let identity = await app.scrypta.returnIdentity(id.pub)
-              app.needsRSA = false
               app.address = id.pub
               app.wallet = identity
               localStorage.setItem('SID', id.walletstore)
