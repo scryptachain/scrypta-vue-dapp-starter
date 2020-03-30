@@ -1,0 +1,82 @@
+@import "~bulma/sass/utilities/_all";
+$primary: #D8213B;
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+.text-left{
+    text-align: left;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.main{
+    margin-top:30px;    
+}
+
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert)
+);
+
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+body, html, .button{
+    font-family: "Sen"!important;
+}
+
+.social-shares span:hover{
+    cursor:pointer!important;
+    opacity:0.4!important;
+}
+
+.main{
+    min-height: 70vh;
+}
+
+.select, select{
+    width:100%;
+}
+
+h1{
+    font-size:28px;
+    font-weight: bold;
+}
+
+.upload-draggable, .upload{
+    width:100%!important;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.list-trade{
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding:10px;
+    margin-bottom:15px;
+}
+
+.list-trade strong{
+    font-size:20px;
+}
+
+.text-center input{
+    text-align: center!important;
+}
