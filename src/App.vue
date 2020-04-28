@@ -42,7 +42,7 @@
                 <h2 class="subtitle">
                   <br />You need a Scrypta Identity to enter the platform.
                   <br />
-                  <br />Use Scrypta ID Extension or <a v-on:click="showCreate">create a new wallet</a>.
+                  <br />Use <a href="https://id.scryptachain.org/" target="_blank">Scrypta ID Extension</a> or <a v-on:click="showCreate">create a new wallet</a>.
                   <br />
                   <br />
                   <b-upload v-model="file" v-on:input="loadWalletFromFile" drag-drop>
