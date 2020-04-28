@@ -40,15 +40,15 @@
                 <h1 class="title is-1">Start Now</h1>
                 <br />
                 <h2 class="subtitle">
-                  <br />Puoi accedere con Scrypta ID extension o creando una nuova identità
+                  <br />You need a Scrypta Identity to enter the platform.
                   <br />
-                  <br />Accedi con Scrypta ID Extension o <a v-on:click="createUser">crea un nuovo wallet</a>.
+                  <br />Use Scrypta ID Extension or <a v-on:click="showCreate">create a new wallet</a>.
                   <br />
                   <br />
                   <b-upload v-model="file" v-on:input="loadWalletFromFile" drag-drop>
                     <section class="section">
                       <div class="content has-text-centered">
-                        <p>Trascina il tuo file .sid here or clicca su upload</p>
+                        <p>Drag and drop your .sid here or click to upload</p>
                       </div>
                     </section>
                   </b-upload>
