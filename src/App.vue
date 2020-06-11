@@ -102,12 +102,6 @@
               style="width:100%"
               v-on:click="createUser"
             >CREATE</button>
-            <button
-              v-if="wallet"
-              class="button is-primary"
-              style="width:100%"
-              v-on:click="updateUser"
-            >UPDATE</button>
           </footer>
           <footer v-if="isCreating" class="modal-card-foot">
             <div style="text-align:center">Creating identity, please wait...</div>
