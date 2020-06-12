@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    <div v-if="!isLogging && wallet">
+    <div v-if="!isLogging && wallet && backup">
       <b-navbar>
         <template slot="brand">
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
             <img src="/logo.png" />
           </b-navbar-item>
         </template>
+        
+        <!-- UNCOMMENT FOR MENU
         <template slot="start">
           <b-navbar-item href="/#/">Home</b-navbar-item>
-        </template>
+        </template> -->
 
         <template slot="end">
           <b-navbar-item tag="div">
@@ -31,6 +33,24 @@
       <br />
       <br />
     </div>
+
+    <div v-if="!isLogging && wallet && !backup">
+      <section class="hero">
+        <div class="hero-body" style="padding: 0;">
+          <div class="container" id="backup" style="margin-top:50px;">
+            <div class="card">
+              <div style="padding: 50px 20px;">
+                <h1 class="title is-1">Backup your .sid file</h1>
+                <p>In order to prevent data loss you must download a backup.</p><br>
+                <b-button v-on:click="downloadBackup" type="is-primary" size="is-large">BACKUP NOW</b-button>
+                <a id="downloadid" style="display:none"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <div v-if="!wallet">
       <section class="hero">
         <div class="hero-body" style="padding: 0;">
@@ -67,6 +87,7 @@
         </div>
       </section>
     </div>
+
     <b-loading :is-full-page="true" :active.sync="isLogging" :can-cancel="false"></b-loading>
     <b-modal :active.sync="showCreateModal" has-modal-card trap-focus aria-role="dialog" aria-modal>
       <form action>
@@ -124,6 +145,7 @@ export default {
       isLogging: true,
       file: [],
       isCreating: false,
+      backup: false,
       isUpdating: false,
       showCreateModal: false,
       password: "",
@@ -139,6 +161,10 @@ export default {
       app.address = SIDS[0];
       let identity = await app.scrypta.returnIdentity(app.address);
       app.wallet = identity;
+      let check_backup = localStorage.getItem('sid_backup')
+      if(check_backup !== null && check_backup !== undefined && check_backup === app.address){
+        app.backup = true
+      }
       app.isLogging = false;
     } else {
       app.isLogging = false;
@@ -162,7 +188,9 @@ export default {
             let key = await app.scrypta.readKey(password, dataKey);
             if (key !== false) {
               app.scrypta.importPrivateKey(key.prv, password);
-              localStorage.setItem("SID", dataKey);
+              localStorage.setItem("SID", dataKey)
+              let exp = dataKey.split(':')
+              localStorage.setItem("sid_backup", exp[0])
               location.reload();
             } else {
               app.$buefy.toast.open({
@@ -221,6 +249,42 @@ export default {
           type: "is-danger"
         });
       }
+    },
+    downloadBackup(){
+      const app = this
+      app.$buefy.dialog.prompt({
+        message: `Enter wallet password`,
+        inputAttrs: {
+          type: "password"
+        },
+        trapFocus: true,
+        onConfirm: async password => {
+          let SID = localStorage.getItem('SID')
+          let key = await app.scrypta.readKey(password, SID);
+          if (key !== false) {
+            var a = document.getElementById("downloadid");
+            app.backup = true
+            localStorage.setItem('sid_backup', app.address)
+            var file = new Blob(
+              [SID],
+              { type: "sid" }
+            );
+            a.href = URL.createObjectURL(file);
+            a.download = app.address + ".sid";
+            var clickEvent = new MouseEvent("click", {
+              view: window,
+              bubbles: true,
+              cancelable: false
+            });
+            a.dispatchEvent(clickEvent);
+          }else{
+            app.$buefy.toast.open({
+              message: "Wrong password!",
+              type: "is-danger"
+            });
+          }
+        }
+      })
     }
   }
 };
