@@ -4,6 +4,9 @@ $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 
+@media screen and (max-width: 1024px){
+    .logout{width:100%!important}
+}
 .text-left{
     text-align: left;
 }
